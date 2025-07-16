@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Exsrsise #3</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 70vh;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        ul li:nth-child(odd) {
+            background: #c1ebc1;
+        }
+
+        ul li {
+            cursor: pointer;
+            position: relative;
+            padding: 12px 8px 12px 40px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            gap: 50px;
+        }
+
+        ul li.checked {
+            background: #bbbdbb;
+            color: #525050;
+            text-decoration: line-through;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 40px;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .fawzi {
+            width: 400px;
+        }
+
+        .addBtn {
+            padding: 10px;
+            background: #d9d9d9;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .addBtn:hover {
+            background-color: #6019a3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="fawzi">
+        <div class="header">
+            <h2>Today's To Do</h2>
+            <input type="text" id="myInput" placeholder="Add to do you list">
+            <button onclick="newElement()" class="addBtn">Add</button>
+        </div>
+        <ul id="myUL"></ul>
+        <button onclick="clearCompleted()" id="clearBtn">Clear all completed</button>
+    </div>
+    <script>
+        function newElement() {
+            var inputValue = document.getElementById("myInput").value;
+            if (!inputValue) {
+                alert("You must write something!");
+                return;
+            }
+
+            if (inputValue.length > 20) {
+                alert("Task title cannot exceed 20 characters");
+                return;
+            }
+
+            var list = document.getElementById("myUL");
+            if (list.getElementsByTagName("li").length >= 5) {
+                alert("You can only add up to five tasks");
+                return;
+            }
+
+            var li = document.createElement("li");
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.className = "task-checkbox";
+
+            var textNode = document.createTextNode(inputValue);
+            var span = document.createElement("SPAN");
+            span.className = "close";
+            span.appendChild(document.createTextNode("\u00D7"));
+
+            li.appendChild(checkbox);
+            li.appendChild(textNode);
+            li.appendChild(span);
+            list.insertBefore(li, list.firstChild);
+
+            document.getElementById("myInput").value = "";
+            checkbox.onclick = function () {
+                li.classList.toggle("checked");
+            };
+            span.onclick = function () {
+                if (li.classList.contains("checked")) {
+                    list.removeChild(li);
+                }
+            };
+        }
+
+        function clearCompleted() {
+            var list = document.getElementById("myUL");
+            var items = list.getElementsByTagName("li");
+            for (var i = items.length - 1; i >= 0; i--) {
+                if (items[i].querySelector(".task-checkbox").checked) {
+                    list.removeChild(items[i]);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
